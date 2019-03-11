@@ -5,9 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    priorityqueue.cpp \
-    heap.cpp
+    heap.cpp \
+    vector.cpp
 
 HEADERS += \
-    priorityqueue.h \
-    heap.h
+    heap.h \
+    vector.h

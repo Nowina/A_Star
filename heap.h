@@ -29,7 +29,7 @@ private:
     void heapify_up(int index); //sorting uptree
 public:
     Heap();
-
+    ~Heap();
     unsigned int size(){
         return this->A.size();
     }

@@ -9,6 +9,9 @@ void swap(int *x, int *y){
 Heap::Heap(){
 
 }
+Heap::~Heap(){
+    A.clear();
+}
 void Heap::heapify_down(int i){
     int left = this->left(i);
     int right = this->right(i);
