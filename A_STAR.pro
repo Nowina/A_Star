@@ -10,4 +10,5 @@ SOURCES += \
 
 HEADERS += \
     heap.h \
-    vector.h
+    vector.h \
+    structs.h

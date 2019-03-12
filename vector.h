@@ -1,31 +1,47 @@
 #ifndef VECTOR_H
 #define VECTOR_H
-
-template <class T>
-
+#include <structs.h>
+#include <iostream>
+template<class T>
 class Vector
 {
 private:
-    int capacity;
-    int size;
-    T *array;
-
+    unsigned int size;
+    nodeList<T> *head;
+    nodeList<T> *tail;
 public:
-    Vector();
-
-    int getSize();
-
-    void pushBack(const T&Item);
-
-    T back();
-
-    void pop_back();
-
-    T at(int index);
+    Vector(){
+        head=tail=NULL;
+        size = 0;
+    }
+    ~Vector(){
+        nodeList<T> *temp;
+        while (head){
+            temp = head->next;
+            delete head;
+            head = temp;
+        }
+        size = 0;
+    }
+    nodeList<T> *push_back(T element){
+        nodeList<T> *actual = new nodeList<T>;
+        actual->data = element;
+    }
+    nodeList<T> * push_front(T element){
+        nodeList<T> *newElement = new nodeList<T>;
+        newElement->data = element;
+        newElement->next = head;
+        newElement->prev = NULL;
+        if (head != NULL){
+            head->prev = newElement;
+        }
+        head = newElement;
+        size++;
+    }
 
     T & operator [ ] (unsigned int i){
         if (i < this->size){
-            return array[i];
+//            return array[i];
         }
     }
 
