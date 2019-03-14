@@ -1,13 +1,13 @@
 #ifndef PRIORITYQUEUE_H
 #define PRIORITYQUEUE_H
 
-#include <vector.h>
+#include <keyvector.h>
 using namespace std;
 template <class T>
 class PriorityQueue
 {
 private:
-    Vector<T> *A;
+    KeyVector<T> *A;
 
     int parent(int i){
         return (i-1)/2;
@@ -49,7 +49,7 @@ private:
     }
 public:
     PriorityQueue(T firstElement,int key){
-        A = new Vector<T>(firstElement,key);
+        A = new KeyVector<T>(firstElement,key);
     }
     ~PriorityQueue(){
         delete A;
@@ -96,7 +96,6 @@ public:
         }
         return NULL;
     }
-
 };
 
 #endif // HEAP_H

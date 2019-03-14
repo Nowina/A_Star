@@ -7,6 +7,10 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
-    vector.h \
-    structs.h \
-    priorityQueue.h
+    priorityQueue.h \
+    graphnode.h \
+    utilities.h \
+    mapgraph.h \
+    matrix.h \
+    keyvector.h \
+    vector.h

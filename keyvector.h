@@ -1,19 +1,19 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef KEYVECTOR_H
+#define KEYVECTOR_H
 #include <utilities.h>
 #include <iostream>
 using namespace std;
 template<class T>
-
-class Vector
+class KeyVector
 {
 private:
     int size;
-    node<T> *head;
-    node<T> *tail;
+    nodeList<T> *head;
+    nodeList<T> *tail;
 public:
-    Vector(T element){
-        node<T> *newElement = new node<T>;
+    KeyVector(T element, int newKey){
+        nodeList<T> *newElement = new nodeList<T>;
+        newElement->key = newKey;
         newElement->data = element;
         newElement->next = NULL;
         newElement->prev = NULL;
@@ -21,13 +21,8 @@ public:
         tail = newElement;
         size = 1;
     }
-    Vector(){
-        head = NULL;
-        tail = NULL;
-        size = 0;
-    }
-    ~Vector(){
-        node<T> *temp;
+    ~KeyVector(){
+        nodeList<T> *temp;
         while (head != NULL){
             temp = head;
             head=head->next;
@@ -39,31 +34,34 @@ public:
     int getSize(){
         return size;
     }
-    node<T> *push_back(T element){
-        if (head == NULL){
-            push_front(element);
-        }
-        else {
-            node<T> *newElement = new node<T>;
-            newElement->data = element;
-            newElement->prev = tail;
-            newElement->next = NULL;
-            tail->next = newElement;
-            tail = newElement;
-            size++;
-            return newElement;
-        }
-
+    int getKey(int index){
+        return this->at(index)->key;
     }
-    node<T> *push_front(T element){
-        node<T> *newElement = new node<T>;
+    void changeKey(int index, int newKey){
+        this->at(index)->key = newKey;
+    }
+    nodeList<T> *push_back(T element, int newKey){
+        nodeList<T> *newElement = new nodeList<T>;
+        newElement->data = element;
+        newElement->key = newKey;
+        newElement->prev = tail;
+        newElement->next = NULL;
+        tail->next = newElement;
+        if (head == NULL){
+            head = tail;
+        }
+        tail = newElement;
+        size++;
+        return newElement;
+    }
+    nodeList<T> *push_front(T element, int newKey){
+        nodeList<T> *newElement = new nodeList<T>;
+        newElement->key = newKey;
         newElement->data = element;
         newElement->next = head;
         newElement->prev = NULL;
         if (head != NULL){
             head->prev = newElement;
-        }else{
-            tail = newElement;
         }
         head = newElement;
         size++;
@@ -72,7 +70,7 @@ public:
     void printList() //test only
     {
         if (size != 0){
-            node<T> *current = head;
+            nodeList<T> *current = head;
             while (current != NULL) {
                 cout<<current->data<<" ";
                 current = current->next;
@@ -80,12 +78,12 @@ public:
             cout<<"\n";
         }
     }
-    node<T> *back(){
+    nodeList<T> *back(){
         return tail;
     }
     void pop_back(){
         if (size != 0){
-            node<T> *temp = tail;
+            nodeList<T> *temp = tail;
             tail->prev= tail->prev;
             tail = tail->prev;
             tail->next = NULL;
@@ -95,7 +93,7 @@ public:
     }
     void pop(){
         if (size != 0){
-            node<T> *temp = head;
+            nodeList<T> *temp = head;
             head->next = head->next;
             head = head->next;
             head->prev = NULL;
@@ -104,14 +102,17 @@ public:
         }
     }
     void swapElements(int first, int second){
-        node<T> *left = this->at(first);
-        node<T> *right = this->at(second);
+        nodeList<T> *left = this->at(first);
+        nodeList<T> *right = this->at(second);
+        int tempKey = left->key;
         T temp = left->data;
         left->data = right->data;
+        left->key = right->key;
+        right->key = tempKey;
         right->data = temp;
     }
-    node<T>* at(int index){
-        node<T> *actual;
+    nodeList<T>* at(int index){
+        nodeList<T> *actual;
         int position;
         if (index <= size){
             if (index < size/2){
@@ -143,4 +144,7 @@ public:
 
 
 };
+
+
+
 #endif // VECTOR_H
