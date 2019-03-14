@@ -3,6 +3,7 @@
 template <class T>
 struct nodeList {
     T data;
+    int key;
     nodeList *next, *prev;
 };
 #endif // STRUCTS_H

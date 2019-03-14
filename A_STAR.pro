@@ -4,10 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp \
-    heap.cpp
+        main.cpp
 
 HEADERS += \
-    heap.h \
     vector.h \
-    structs.h
+    structs.h \
+    priorityQueue.h
