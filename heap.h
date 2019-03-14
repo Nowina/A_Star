@@ -9,8 +9,6 @@ class Heap
 {
 private:
     vector<int> A;
-    int capacity;
-    int heap_size;
 
     int parent(int i){
         return (i-1)/2;
@@ -30,6 +28,7 @@ private:
 public:
     Heap();
     ~Heap();
+
     unsigned int size(){
         return this->A.size();
     }

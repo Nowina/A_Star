@@ -5,8 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    heap.cpp \
-    vector.cpp
+    heap.cpp
 
 HEADERS += \
     heap.h \

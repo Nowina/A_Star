@@ -1,34 +1,30 @@
 #include <iostream>
-#include <test.h>
+#include <vector.h>
 #include <heap.h>
+#include <structs.h>
 using namespace std;
-
+class GraphNode{
+public:
+    int data;
+    GraphNode();
+    GraphNode(int i){
+        data = i;
+    }
+};
 int main()
 {
-   Heap heap;
-   heap.push(3);
-   heap.push(2);
-   heap.push(15);
-   heap.push(60);
-   cout<<"Size is"<< heap.size()<<"\n";
-
-   cout<<heap.top() << " ";
-   heap.pop();
-
-   cout<<heap.top() << " ";
-   heap.pop();
-
-   heap.push(5);
-   heap.push(4);
-   heap.push(45);
-   cout<<"\n"<<"Size is "<<heap.size()<<"\n";
-
-   cout<<heap.top() << " ";
-   heap.pop();
-   cout<<heap.top() << " ";
-   heap.pop();
-   cout<<heap.top() << " ";
-   heap.pop();
-   cout<<heap.top() << " ";
-   heap.pop();
+   GraphNode *node0 = new GraphNode(0);
+   GraphNode *node1 = new GraphNode(1);
+   GraphNode *node2 = new GraphNode(2);
+   GraphNode *node3 = new GraphNode(3);
+   GraphNode *node4 = new GraphNode(4);
+   Vector<GraphNode*> *vector  = new Vector<GraphNode*>(node0);
+   vector->push_front(node1);
+   vector->push_back(node2);
+   vector->push_back(node3);
+   vector->push_back(node4);
+   for (unsigned int i =0; i < vector->getSize(); i++){
+       cout<<vector->at(i)->data->data<<" ";
+   }
+   delete vector;
 }
