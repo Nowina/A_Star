@@ -12,11 +12,11 @@ private:
     int x; //x position
     int y; //y position
     int d;
-    bool isObstacle;
     void calculateF(){
         f = g + h;
     }
 public:
+    bool isObstacle;
     GraphNode(int x, int y) {
         this->x = x;
         this->y = y;
@@ -29,12 +29,7 @@ public:
     }
     ~GraphNode(){}
     int f; //g +h
-    void makeNonPassable(){
-        isObstacle = true;
-    }
-    bool isPassable(){
-        return !isObstacle;
-    }
+
     void calculateH(int gx,int gy){ //gx,gy -> goal coordinates
         int dx = abs(x - gx);
         int dy = abs(y - gy);

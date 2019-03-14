@@ -24,7 +24,7 @@ public:
     }
 protected:
     int index( int x, int y ){
-        return x + width * y;
+        return y + width * x;
     }
 };
 #endif // MATRIX_H

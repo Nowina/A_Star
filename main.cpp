@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-//    MapGraph *map = new MapGraph(10,10);
-
-//    delete map;
+    MapGraph *map = new MapGraph(14,10);
+    map->loadMap("C:\\Users\\Nowina\\Documents\\STUDIA\\ZAP2\\A_STAR\\test.map");
+    delete map;
 }
