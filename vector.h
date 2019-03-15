@@ -34,6 +34,7 @@ public:
             delete temp;
         }
         delete head;
+        delete tail;
         size = 0;
     }
     int getSize(){
@@ -42,6 +43,7 @@ public:
     node<T> *push_back(T element){
         if (head == NULL){
             push_front(element);
+            return NULL;
         }
         else {
             node<T> *newElement = new node<T>;

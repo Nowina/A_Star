@@ -3,38 +3,43 @@
 #include <iostream>
 #include <keyvector.h>
 #include <cmath>
+#include <utilities.h>
 using namespace std;
 class GraphNode
 {
 private:
     int g; //g value for A*
     int h; //heuristic value
-    int x; //x position
-    int y; //y position
-    int d;
-    void calculateF(){
-        f = g + h;
-    }
+    location position;
+    int d =1;
+    double d2 = sqrt(2);
 public:
     bool isObstacle;
+    int f; //g +h
     GraphNode(int x, int y) {
-        this->x = x;
-        this->y = y;
+        position.x = x;
+        position.y= y;
         isObstacle = false;
     }
     GraphNode(int x, int y, bool isObstacle){
-        this->x = x;
-        this->y = y;
+        position.x = x;
+        position.y = y;
         this->isObstacle = isObstacle;
     }
     ~GraphNode(){}
-    int f; //g +h
-
-    void calculateH(int gx,int gy){ //gx,gy -> goal coordinates
-        int dx = abs(x - gx);
-        int dy = abs(y - gy);
-        h = d * (dx + dy) + (d - 2*d)*min(dx,dy);
-        calculateF();
+    void calculateF(){
+        f = g + h;
+    }
+    void setG(int newG){
+        g = newG;
+    }
+    bool isPassable(){
+        return !isObstacle;
+    }
+    void calculateH(location goal){
+        int dx = abs(position.x - goal.x);
+        int dy = abs(position.y - goal.y);
+        h = d * (dx + dy) + int((d2 - 2*d))*min(dx,dy);
     }
 
 };

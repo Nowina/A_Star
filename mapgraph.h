@@ -1,7 +1,7 @@
 #ifndef MAPGRAPH_H
 #define MAPGRAPH_H
 #include <iostream>
-#include <matrix.h>
+#include <matrixv2.h>
 #include <graphnode.h>
 #include <vector.h>
 #include <utilities.h>
@@ -13,34 +13,41 @@ class MapGraph
 private:
     int xSize;
     int ySize;
-    Matrix<GraphNode*> *array;
+    MatrixV2 *matrix;
     int size;
     location start, goal;
 public:
     MapGraph( int xSize, int ySize) {
         this->xSize = xSize;
         this->ySize = ySize;
-        array = new Matrix<GraphNode*>(xSize,ySize);
-        size = array->getSize();
+        matrix = new MatrixV2(xSize,ySize);
+        size = matrix->getSize();
         for (int y = 0; y < ySize ; ++y) {
             for (int x = 0; x < xSize; ++x) {
                 GraphNode *newNode = new GraphNode(x,y,true);
-                array->write(x,y, newNode);
+                matrix->write(x,y,newNode);
             }
         }
     }
     ~MapGraph(){
-        delete array;
+        delete matrix;
     }
     GraphNode* getNode(int x, int y){
-        return array->at(x,y);
+        return matrix->at(x,y);
     }
     Vector<GraphNode*>* getNeighbors(int x, int y){
         Vector<GraphNode*> *neighbors = new Vector<GraphNode*>;
+        int neighborX = 0;
+        int neighborY = 0;
+        GraphNode *neighbor;
         for (int i = 0; i < 8; ++i) {
-            GraphNode * neighbor = array->at(x + dirs[i].x, y + dirs[i].y);
-            if (!neighbor->isObstacle){
-                neighbors->push_back(neighbor);
+            neighborX = x + dirs[i].x;
+            neighborY = y + dirs[i].y;
+            if ( !(neighborX < 0 || neighborX >= xSize || neighborY < 0 || neighborY >= ySize) ){
+                neighbor = getNode(neighborX,neighborY);
+                if ( neighbor->isPassable() == true){
+                   neighbors->push_back(neighbor);
+                }
             }
         }
         return neighbors;
@@ -51,14 +58,13 @@ public:
         ifstream file;
         file.open(fileName.c_str(), ios::in);
         if (file.is_open()){
-//            char node;
             string line;
             int y = 0;
             while (!file.eof()) {
                 getline(file,line);
-                for (int i = 0; i < line.size(); i++){
+                for (unsigned int i = 0; i < line.size(); i++){
                     if (line[i] == ' '){
-                        getNode(i,y)->isObstacle = false;
+                        getNode(int(i),y)->isObstacle = false;
                     }
                 }
                 if (y == 9){
@@ -81,6 +87,14 @@ public:
             }
             cout<<"\n";
         }
+    }
+    void setStart(int x, int y){
+        start.x = x;
+        start.y = y;
+    }
+    void setGoal(int x, int y){
+        goal.x = x;
+        goal.y = y;
     }
 };
 #endif // MAPGRAPH_H

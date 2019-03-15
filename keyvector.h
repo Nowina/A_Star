@@ -29,6 +29,7 @@ public:
             delete temp;
         }
         delete head;
+        delete tail;
         size = 0;
     }
     int getSize(){
