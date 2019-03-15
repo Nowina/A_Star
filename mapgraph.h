@@ -50,23 +50,26 @@ public:
     void loadMap(string fileName){
         ifstream file;
         file.open(fileName.c_str(), ios::in);
-
         if (file.is_open()){
-            char node;
-            for (int y = 0; y < ySize; y++) {
-                for (int x = 0; x < xSize; x++) {
-                    file.get(node);
-                    if (file.eof()){
-                        break;
-                    }
-                    if (node == ' '){
-                        getNode(x,y)->isObstacle = false;
+//            char node;
+            string line;
+            int y = 0;
+            while (!file.eof()) {
+                getline(file,line);
+                for (int i = 0; i < line.size(); i++){
+                    if (line[i] == ' '){
+                        getNode(i,y)->isObstacle = false;
                     }
                 }
+                if (y == 9){
+                    break;
+                }
+                y++;
             }
             file.close();
         }
-
+    }
+    void printMap(){
         for (int y = 0; y < ySize; y++) {
             for (int x = 0; x < xSize; x++) {
                 if (getNode(x,y)->isObstacle){
