@@ -11,6 +11,11 @@ int main()
     MapGraph *map = new MapGraph(14,10);
     map->loadMap("C:\\Users\\Nowina\\Documents\\STUDIA\\ZAP2\\A_STAR\\test.map");
     map->printMap();
-    cout<<map->getNeighbors(6,3)->getSize();
+    GraphNode* current = map->getNode(4,5);
+    current->setG(4);
+    Vector<GraphNode*> *neighbors = map->getNeighbors(current);
+    for (int i = 0; i < neighbors->getSize(); ++i) {
+        cout<<neighbors->at(i)->data->getG()<<" ";
+    }
     delete map;
 }

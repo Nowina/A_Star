@@ -11,8 +11,14 @@ private:
     int g; //g value for A*
     int h; //heuristic value
     location position;
-    int d =1;
-    double d2 = sqrt(2);
+    const int d =1;
+    const double d2 = sqrt(2);
+    int diagonalDistance (location location){
+        int dx = abs(position.x - location.x);
+        int dy = abs(position.y - location.y);
+        int cost = d * (dx + dy) + int((d2 - 2*d))*min(dx,dy);
+        return cost;
+    }
 public:
     bool isObstacle;
     int f; //g +h
@@ -33,13 +39,22 @@ public:
     void setG(int newG){
         g = newG;
     }
+    int getG(){
+        return g;
+    }
     bool isPassable(){
         return !isObstacle;
     }
-    void calculateH(location goal){
-        int dx = abs(position.x - goal.x);
-        int dy = abs(position.y - goal.y);
-        h = d * (dx + dy) + int((d2 - 2*d))*min(dx,dy);
+    location getPosition(){
+        return position;
+    }
+    int calculateG(location location){
+        int cost = diagonalDistance(location);
+        return cost;
+    }
+    int calculateH(location goal){
+        h = diagonalDistance(goal);
+        return h;
     }
 
 };
