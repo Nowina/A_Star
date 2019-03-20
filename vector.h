@@ -34,7 +34,6 @@ public:
             delete temp;
         }
         delete head;
-        delete tail;
         size = 0;
     }
     int getSize(){
@@ -86,23 +85,28 @@ public:
         return tail;
     }
     void pop_back(){
-        if (size != 0){
+        if (size != 1 && size != 0){
             node<T> *temp = tail;
             tail->prev= tail->prev;
             tail = tail->prev;
             tail->next = NULL;
             delete temp;
             size--;
+        }else {
+            remove(0);
         }
     }
     void pop(){
-        if (size != 0){
+        if (size != 1 && size != 0){
             node<T> *temp = head;
             head->next = head->next;
             head = head->next;
             head->prev = NULL;
             delete temp;
             size--;
+        }
+        else {
+             remove(0);
         }
     }
     void swapElements(int first, int second){
@@ -136,6 +140,44 @@ public:
         }
         else {
             return NULL;
+        }
+    }
+    void remove(int index){
+        node<T> * temp = this->at(index);
+        if (head == NULL){
+            return;
+        }
+        if (temp == head){
+            head = head->next;
+        }
+        if (temp == tail){
+            tail = tail->prev;
+        }
+        if (temp->next != NULL){
+            temp->next->prev = temp->prev;
+        }
+        if (temp->prev != NULL){
+            temp->prev->next = temp->next;
+        }
+        size--;
+        delete temp;
+    }
+    bool contains(T element, int &position){ //checks whether Vector contains given element
+        if (size == 0){
+            return false;
+        }
+        else {
+            position = 0;
+            bool contains = false;
+            node<T> *current = head;
+            while (current != NULL) {
+                position++;
+                if (current->data == element){
+                    break;
+                }
+                current = current->next;
+            }
+            return  contains;
         }
     }
 

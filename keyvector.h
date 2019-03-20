@@ -42,18 +42,23 @@ public:
         this->at(index)->key = newKey;
     }
     nodeList<T> *push_back(T element, int newKey){
-        nodeList<T> *newElement = new nodeList<T>;
-        newElement->data = element;
-        newElement->key = newKey;
-        newElement->prev = tail;
-        newElement->next = NULL;
-        tail->next = newElement;
-        if (head == NULL){
-            head = tail;
+        if (size == 0){
+            push_front(element,newKey);
         }
-        tail = newElement;
-        size++;
-        return newElement;
+        else{
+            nodeList<T> *newElement = new nodeList<T>;
+            newElement->data = element;
+            newElement->key = newKey;
+            newElement->prev = tail;
+            newElement->next = NULL;
+            tail->next = newElement;
+            if (head == NULL){
+                head = tail;
+            }
+            tail = newElement;
+            size++;
+            return newElement;
+        }
     }
     nodeList<T> *push_front(T element, int newKey){
         nodeList<T> *newElement = new nodeList<T>;
@@ -83,23 +88,28 @@ public:
         return tail;
     }
     void pop_back(){
-        if (size != 0){
+        if (size != 1 && size != 0){
             nodeList<T> *temp = tail;
             tail->prev= tail->prev;
             tail = tail->prev;
             tail->next = NULL;
             delete temp;
             size--;
+        }else {
+            remove(0);
         }
     }
     void pop(){
-        if (size != 0){
+        if (size != 1 && size != 0){
             nodeList<T> *temp = head;
             head->next = head->next;
             head = head->next;
             head->prev = NULL;
             delete temp;
             size--;
+        }
+        else {
+             remove(0);
         }
     }
     void swapElements(int first, int second){
@@ -136,6 +146,44 @@ public:
         }
         else {
             return NULL;
+        }
+    }
+    void remove(int index){
+        nodeList<T> * temp = this->at(index);
+        if (head == NULL){
+            return;
+        }
+        if (temp == head){
+            head = head->next;
+        }
+        if (temp == tail){
+            tail = tail->prev;
+        }
+        if (temp->next != NULL){
+            temp->next->prev = temp->prev;
+        }
+        if (temp->prev != NULL){
+            temp->prev->next = temp->next;
+        }
+        size--;
+        delete temp;
+    }
+    bool contains(T element, int &position){ //checks whether Vector contains given element
+        if (size == 0){
+            return false;
+        }
+        else {
+            position = 0;
+            bool contains = false;
+            nodeList<T> *current = head;
+            while (current != NULL) {
+                position++;
+                if (current->data == element){
+                    break;
+                }
+                current = current->next;
+            }
+            return  contains;
         }
     }
 

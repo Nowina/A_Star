@@ -26,6 +26,7 @@ public:
         for (int y = 0; y < ySize ; ++y) {
             for (int x = 0; x < xSize; ++x) {
                 GraphNode *newNode = new GraphNode(x,y,true);
+                newNode->parent = nullptr;
                 matrix->write(x,y,newNode);
             }
         }
@@ -39,6 +40,10 @@ public:
     GraphNode* getNode(location location){
         return matrix->at(location.x,location.y);
     }
+    location getDimensions(){
+        location dim(xSize,ySize);
+        return dim;
+    }
     Vector<GraphNode*>* getNeighbors(GraphNode* parent){
         Vector<GraphNode*> *neighbors = new Vector<GraphNode*>;
         location position = parent->getPosition();
@@ -51,6 +56,9 @@ public:
             if ( !(neighborX < 0 || neighborX >= xSize || neighborY < 0 || neighborY >= ySize) ){
                 neighbor = getNode(neighborX,neighborY);
                 if ( neighbor->isPassable() == true){
+                    if (neighbor->parent == nullptr && neighbor->getPosition() != start){
+                        neighbor->parent = parent;
+                    }
                     neighbor->setG(parent->getG() + parent->calculateG(neighbor->getPosition()));
                     neighbor->calculateH(goal);
                     neighbor->calculateF();
@@ -59,7 +67,6 @@ public:
             }
         }
         return neighbors;
-        delete neighbors;
     }
     void loadMap(string fileName){
         ifstream file;
@@ -82,61 +89,97 @@ public:
             file.close();
         }
     }
-    void printMap(){ //TEST ONLY
-        for (int y = 0; y < ySize; y++) {
-            for (int x = 0; x < xSize; x++) {
-                if (getNode(x,y)->isObstacle){
-                    cout<<"@";
-                }
-                else {
-                    cout<<" ";
-                }
-            }
-            cout<<"\n";
+    void setStart(int x, int y){ //use only after the map was loaded
+        if (getNode(x,y)->isObstacle){
+            cout<<"Cannot set start on obstacle!"<<"\n";
+        }
+        else{
+            start.x = x;
+            start.y = y;
         }
     }
-    void setStart(int x, int y){
-        start.x = x;
-        start.y = y;
+    location getStart(){
+        return start;
     }
-    void setGoal(int x, int y){
-        goal.x = x;
-        goal.y = y;
+    location getGoal(){
+        return goal;
     }
-//    void aStarSearch(){
-//        GraphNode* start = getNode(this->start);
+    void setGoal(int x, int y){ //use only after the map was loaded
+        if (getNode(x,y)->isObstacle){
+            cout<<"Cannot set goal on obstacle!"<<"\n";
+        }
+        else{
+            goal.x = x;
+            goal.y = y;
+        }
+    }
+    Vector<GraphNode*> aStarSearch(){
+        GraphNode* start = getNode(this->start);
+        start->parent = nullptr;
+        start->setG(0);
+        start->calculateH(goal);
+        start->calculateF();
 
-//        PriorityQueue<GraphNode*> *open = new PriorityQueue<GraphNode*>(start,0);
+        PriorityQueue<GraphNode*> *open = new PriorityQueue<GraphNode*>(start,0);
+        KeyVector<GraphNode*> *closed = new KeyVector<GraphNode*>(start,0);
+        Vector<GraphNode*> *neighbors;
+        Vector<GraphNode*> path;
+        GraphNode * current;
+        open->push(start, 0);
 
-////        KeyVector<GraphNode*> *costSoFar = new KeyVector<GraphNode*>(start,0);
-//        int costSoFar = 0;
-//        Vector<GraphNode*> *closed = new Vector<GraphNode*>(start);
-//        Vector<GraphNode*> *neighbors;
+        while ( !(open->isEmpty()) ) {
+            current = open->top(); //get current from OPEN
+            location currentLocation = current->getPosition(); //get location of current
 
-//        while ( !(open->isEmpty()) ) {
-//            GraphNode *current = open->top();
-//            location currentLocation = current->getPosition(); //get current
+            if (currentLocation == goal){ //check if goal reached
+                path = reconstructPath(current);
+                return path;
+            }
 
-//            if (currentLocation.x == goal.x && currentLocation.y == goal.y){ //check if goal reached
-//                break;
-//            }
+            open->pop(); //remove current from OPEN
+            closed->push_front(current,current->f); //add current to CLOSED
 
-//            open->pop(); //remove current from OPEN
-//            closed->push_back(current); //add current to CLOSED
+            neighbors = getNeighbors(current); //get neighbors of CURRENT
 
-//            neighbors = getNeighbors(currentLocation); //get neighbors of CURRENT
+            for (int  i = 0;  i < neighbors->getSize(); i++){
+                GraphNode *neighbor = neighbors->at(i)->data;
+                int neighborOpenIndex = 0;
+                int neighborClosedIndex = 0;
+                int neighborF = neighbor->f;
+                bool inOpen = open->contains(neighbor,neighborOpenIndex);
+                bool inClosed = closed->contains(neighbor,neighborClosedIndex);
+                if (!inOpen && !inClosed){
+                    open->push(neighbor,neighbor->f);
+                    continue;
+                }
+                else if (inOpen){
+                    if (open->at(neighborOpenIndex)->f > neighborF){
+                        open->remove(neighborOpenIndex);
+                        open->push(neighbor,neighborF);
+                    }
+                }
+                else if (inClosed) {
+                    if(closed->at(neighborClosedIndex)->data->f> neighborF){
+                        closed->remove(neighborClosedIndex);
+                        open->push(neighbor,neighborF);
+                    }
 
-//            for (int  i = 0;  i < neighbors->getSize(); i++) {
-//               int newCost = neighbors->at(i)->data->getG();
-
-
-//            }
-
-//        }
-
-//        delete neighbors;
-//        delete open;
-//        delete closed;
-//    }
+                }
+            }
+            closed->push_front(current,current->getG());
+        }
+        delete open;
+        delete closed;
+        return path;
+    }
+    Vector<GraphNode*> reconstructPath(GraphNode* goal){
+        Vector<GraphNode*> path;
+        GraphNode* current = goal;
+        while (current->parent != nullptr) {
+            path.push_front(current);
+            current = current->parent;
+        }
+        return path;
+    }
 };
 #endif // MAPGRAPH_H

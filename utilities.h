@@ -17,6 +17,12 @@ struct location{
     int y;
     location(){}
     location(int x, int y):x(x),y(y){}
+    bool operator==(const location other) const{
+        return (x == other.x && y == other.y);
+    }
+    bool operator!=(const location other) const{
+        return !(x == other.x && y == other.y);
+    }
 };
 
 static location dirs [8] = {

@@ -20,6 +20,7 @@ private:
         return cost;
     }
 public:
+    GraphNode* parent;
     bool isObstacle;
     int f; //g +h
     GraphNode(int x, int y) {
@@ -55,6 +56,9 @@ public:
     int calculateH(location goal){
         h = diagonalDistance(goal);
         return h;
+    }
+    bool operator == (GraphNode other){
+        return other.getPosition() == this->getPosition();
     }
 
 };

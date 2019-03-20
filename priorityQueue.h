@@ -25,24 +25,24 @@ private:
     {
         int left = this->left(i);
         int right = this->right(i);
-        int maxIndex = i;
+        int minIndex = i;
 
-        if (left < size() && A->at(left)->key > A->at(maxIndex)->key){
-            maxIndex = left;
+        if (left < size() && A->at(left)->key < A->at(minIndex)->key){
+            minIndex = left;
         }
-        if (right < size() && A->at(right)->key > A->at(maxIndex)->key){
-            maxIndex = right;
+        if (right < size() && A->at(right)->key < A->at(minIndex)->key){
+            minIndex = right;
         }
 
-        if (maxIndex != i){
-            A->swapElements(i,maxIndex);
-            heapify_down(maxIndex);
+        if (minIndex != i){
+            A->swapElements(i,minIndex);
+            heapify_down(minIndex);
         }
     }
     void heapify_up(int i) //sorting uptree
     {
         int parent = this->parent(i);
-        if (i && A->at(parent)->key < A->at(i)->key){
+        if (i && A->at(parent)->key > A->at(i)->key){
             A->swapElements(i,parent);
             heapify_up(parent);
         }
@@ -83,6 +83,15 @@ public:
             cout<<"\n"<< oor.what();
         }
     }
+    T at(int index){
+        return A->at(index)->data;
+    }
+    void remove(int index){
+        A->remove(index);
+    }
+    void changeKey(int index, int newKey){
+        A->changeKey(index, newKey);
+    }
     T top() //return element with highest priority
     {
         try {
@@ -94,7 +103,10 @@ public:
         catch(const out_of_range &oor){
             cout<<"\n"<< oor.what();
         }
-        return NULL;
+        return nullptr;
+    }
+    bool contains(T element, int &position){ //checks whether Vector contains given element
+        return A->contains(element,position);
     }
 };
 
