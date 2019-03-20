@@ -44,6 +44,7 @@ public:
     nodeList<T> *push_back(T element, int newKey){
         if (size == 0){
             push_front(element,newKey);
+            return nullptr;
         }
         else{
             nodeList<T> *newElement = new nodeList<T>;

@@ -166,8 +166,7 @@ public:
         }
         delete open;
         delete closed;
-        cout<<"Failed to reach goal :("<<"\n";
-        return 0;
+        return path;
     }
     Vector<GraphNode*> reconstructPath(GraphNode* goal){
         Vector<GraphNode*> path;
