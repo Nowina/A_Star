@@ -2,7 +2,42 @@
 #define CONSOLEINTERFACE_H
 #include <mapgraph.h>
 #include <iostream>
+#include <utilities.h>
+#include <graphnode.h>
+#include <vector.h>
 using namespace std;
+MapGraph *loadMap(){
+    int x,y;
+    string filename;
+    string route = "C:\\Users\\Nowina\\Documents\\STUDIA\\ZAP2\\A_STAR\\"; //FIX THIS!
+    cout<<"Set height of map: ";
+    cin>>y;
+    cout<<"Set width of map: ";
+    cin>>x;
+    MapGraph *map = new MapGraph(x,y);
+    cout<<"Enter .map file name: ";
+    cin>>filename;
+    filename = route+filename+".map";
+    map->loadMap(filename);
+    return map;
+}
+void setGoalAndStart(MapGraph*&map){
+    int xStart,yStart,xGoal,yGoal;
+    cout<<"Set start x and y: ";
+    cin>>xStart>>yStart;
+    while (xStart > map->getDimensions().x || yStart > map->getDimensions().y || !map->getNode(xStart,yStart)->isPassable() ) {
+        cout<<"Start cannot be outside map or on obstacle ! Enter valid numbers: "<<"\n";
+        cin>>xStart>>yStart;
+    }
+    map->setStart(xStart,yStart);
+    cout<<"Set goal x and y: ";
+    cin>>xGoal>>yGoal;
+    while (xGoal > map->getDimensions().x || yGoal > map->getDimensions().y || !map->getNode(xGoal,yGoal)->isPassable() ) {
+        cout<<"Goal cannot be outside map or on obstacle ! Enter valid numbers: "<<"\n";
+        cin>>xGoal>>yGoal;
+    }
+    map->setGoal(xGoal,yGoal);
+}
 void printMap(MapGraph* map){ //TEST ONLY
     bool startFound = false;
     bool goalFound  = false;
@@ -42,16 +77,15 @@ void printPath(MapGraph * map, Vector<GraphNode*> path){
     location start = map->getStart();
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
+    cout<<"Path Found !!! Look at it ! :)"<<"\n";
     for (int y = 0; y < ySize; y++) {
         for (int x = 0; x < xSize; x++) {
             GraphNode * node = map->getNode(x,y);
             location nodePosition = node->getPosition();
-            int index = 0;
             bool isOnPath = false;
             for (int i = 0; i < path.getSize(); ++i) {
                 if (nodePosition == path.at(i)->data->getPosition()){
                     isOnPath = true;
-                    index = i;
                 }
             }
             if (node->isObstacle){

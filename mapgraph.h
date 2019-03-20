@@ -90,10 +90,7 @@ public:
         }
     }
     void setStart(int x, int y){ //use only after the map was loaded
-        if (getNode(x,y)->isObstacle){
-            cout<<"Cannot set start on obstacle!"<<"\n";
-        }
-        else{
+        if (!getNode(x,y)->isObstacle){
             start.x = x;
             start.y = y;
         }
@@ -105,10 +102,7 @@ public:
         return goal;
     }
     void setGoal(int x, int y){ //use only after the map was loaded
-        if (getNode(x,y)->isObstacle){
-            cout<<"Cannot set goal on obstacle!"<<"\n";
-        }
-        else{
+        if (!getNode(x,y)->isObstacle){
             goal.x = x;
             goal.y = y;
         }
@@ -133,6 +127,8 @@ public:
 
             if (currentLocation == goal){ //check if goal reached
                 path = reconstructPath(current);
+                delete open;
+                delete closed;
                 return path;
             }
 
@@ -170,7 +166,8 @@ public:
         }
         delete open;
         delete closed;
-        return path;
+        cout<<"Failed to reach goal :("<<"\n";
+        return 0;
     }
     Vector<GraphNode*> reconstructPath(GraphNode* goal){
         Vector<GraphNode*> path;
