@@ -26,6 +26,9 @@ public:
     GraphNode(int x, int y) {
         position.x = x;
         position.y= y;
+        g = 0;
+        h = 0;
+        f = 0;
         isObstacle = false;
     }
     GraphNode(int x, int y, bool isObstacle){
@@ -36,6 +39,9 @@ public:
     ~GraphNode(){}
     void calculateF(){
         f = g + h;
+    }
+    void addToG(int newG){
+        g += newG;
     }
     void setG(int newG){
         g = newG;
