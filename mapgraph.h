@@ -102,6 +102,7 @@ public:
 
         while ( !(open->isEmpty()) ) {
             current = open->top(); //get current from OPEN
+            current->wasVisited = true;
             location currentLocation = current->getPosition(); //get location of current
 
             if (currentLocation == goal){ //check if goal reached
@@ -121,12 +122,10 @@ public:
                 location neighborLocation = neighbor->getPosition();
                 int neighborOpenIndex = 0;
                 int neighborClosedIndex = 0;
-//                int neighborF = neighbor->f;
-//                int neighborG = neighbor->getG();
                 bool inOpen = open->contains(neighbor,neighborOpenIndex);
                 bool inClosed = closed->contains(neighbor,neighborClosedIndex);
 
-                if (inClosed){
+                if (inClosed || neighbor->wasVisited){
                     continue;
                 }
 
@@ -140,24 +139,7 @@ public:
                 else if (neighborTentativeG >= closed->at(neighborClosedIndex)->data->getG()) {
                     continue;
                 }
-//                if (!inOpen && !inClosed){
-//                    open->push(neighbor,neighbor->f);
-//                    continue;
-//                }
-//                else if (inOpen){
-//                    if (open->at(neighborOpenIndex)->getG() > neighborG){
-//                        open->remove(neighborOpenIndex);
-//                        open->push(neighbor,neighborF);
-//                    }
-//                }
-//                else if (inClosed) {
-//                    if(closed->at(neighborClosedIndex)->data->getG() > neighborG){
-//                        closed->remove(neighborClosedIndex);
-//                        open->push(neighbor,neighborF);
-//                    }
-//                }
             }
-//            closed->push_front(current,current->getG());
         }
         delete open;
         delete closed;

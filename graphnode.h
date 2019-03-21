@@ -24,6 +24,7 @@ private:
 public:
     GraphNode* parent;
     bool isObstacle;
+    bool wasVisited = false;
     int f; //g +h
     GraphNode(int x, int y) {
         position.x = x;
