@@ -14,61 +14,23 @@ private:
     const int d = 1; //cost of horizontal/vertical movement
     const double d2 = sqrt(2); //cost of diagonal movement
 
-    int diagonalDistance (location location){
-        int dx = abs(position.x - location.x);
-        int dy = abs(position.y - location.y);
-        int cost = d * (dx + dy) + int((d2 - 2*d))*min(dx,dy);
-        return cost;
-    }
+    int diagonalDistance (location location);
 
 public:
     GraphNode* parent;
     bool isObstacle;
     bool wasVisited = false;
     int f; //g +h
-    GraphNode(int x, int y) {
-        position.x = x;
-        position.y= y;
-        g = 0;
-        h = 0;
-        f = 0;
-        isObstacle = false;
-    }
-    GraphNode(int x, int y, bool isObstacle){
-        position.x = x;
-        position.y = y;
-        this->isObstacle = isObstacle;
-    }
+    GraphNode(int x, int y);
+    GraphNode(int x, int y, bool isObstacle);
     ~GraphNode(){}
-    void calculateF(){
-        f = g + h;
-    }
-//    void addToG(int newG){
-//        g += newG;
-//    }
-    void setG(int newG){
-        g = newG;
-    }
-    int getG(){
-        return g;
-    }
-    bool isPassable(){
-        return !isObstacle;
-    }
-    location getPosition(){
-        return position;
-    }
-    int calculateG(location location){
-        int cost = diagonalDistance(location);
-        return cost;
-    }
-    int calculateH(location goal){
-        h = diagonalDistance(goal);
-        return h;
-    }
-    bool operator == (GraphNode other){
-        return other.getPosition() == this->getPosition();
-    }
-
+    void calculateF();
+    void setG(int newG);
+    int getG();
+    bool isPassable();
+    location getPosition();
+    int calculateG(location location);
+    int calculateH(location goal);
+    bool operator == (GraphNode other);
 };
 #endif // GRAPHNODE_H

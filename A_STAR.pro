@@ -4,7 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    graphnode.cpp \
+    mapgraph.cpp \
+    matrixv2.cpp \
+    consoleinterface.cpp
 
 HEADERS += \
     priorityQueue.h \
