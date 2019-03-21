@@ -133,36 +133,53 @@ public:
             }
 
             open->pop(); //remove current from OPEN
-            closed->push_front(current,current->f); //add current to CLOSED
+            closed->push_front(current,current->getG()); //add current to CLOSED
 
             neighbors = getNeighbors(current); //get neighbors of CURRENT
 
             for (int  i = 0;  i < neighbors->getSize(); i++){
                 GraphNode *neighbor = neighbors->at(i)->data;
+                location neighborLocation = neighbor->getPosition();
                 int neighborOpenIndex = 0;
                 int neighborClosedIndex = 0;
-                int neighborF = neighbor->f;
+//                int neighborF = neighbor->f;
+//                int neighborG = neighbor->getG();
                 bool inOpen = open->contains(neighbor,neighborOpenIndex);
                 bool inClosed = closed->contains(neighbor,neighborClosedIndex);
-                if (!inOpen && !inClosed){
-                    open->push(neighbor,neighbor->f);
+
+                if (inClosed){
                     continue;
                 }
-                else if (inOpen){
-                    if (open->at(neighborOpenIndex)->f > neighborF){
-                        open->remove(neighborOpenIndex);
-                        open->push(neighbor,neighborF);
-                    }
-                }
-                else if (inClosed) {
-                    if(closed->at(neighborClosedIndex)->data->f> neighborF){
-                        closed->remove(neighborClosedIndex);
-                        open->push(neighbor,neighborF);
-                    }
 
+                int neighborTentativeG = current->getG() + current->calculateG(neighborLocation);
+
+                if (!inOpen){
+                    neighbor->setG(neighborTentativeG);
+                    neighbor->calculateF();
+                    open->push(neighbor,neighbor->f);
                 }
+
+                else if (neighborTentativeG >= closed->at(neighborClosedIndex)->data->getG()) {
+                    continue;
+                }
+//                if (!inOpen && !inClosed){
+//                    open->push(neighbor,neighbor->f);
+//                    continue;
+//                }
+//                else if (inOpen){
+//                    if (open->at(neighborOpenIndex)->getG() > neighborG){
+//                        open->remove(neighborOpenIndex);
+//                        open->push(neighbor,neighborF);
+//                    }
+//                }
+//                else if (inClosed) {
+//                    if(closed->at(neighborClosedIndex)->data->getG() > neighborG){
+//                        closed->remove(neighborClosedIndex);
+//                        open->push(neighbor,neighborF);
+//                    }
+//                }
             }
-            closed->push_front(current,current->getG());
+//            closed->push_front(current,current->getG());
         }
         delete open;
         delete closed;
