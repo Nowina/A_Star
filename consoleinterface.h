@@ -87,7 +87,7 @@ void printMap(MapGraph* map){ //TEST ONLY
     }
     cout<<"\n";
 }
-void printPath(MapGraph * map, Vector<GraphNode*> path){
+void printPath(MapGraph * map, Vector<GraphNode*> path, double timeTook){
     bool startFound = false;
     bool goalFound  = false;
     location mapDimensions = map->getDimensions();
@@ -95,7 +95,7 @@ void printPath(MapGraph * map, Vector<GraphNode*> path){
     location start = map->getStart();
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
-    cout<<"Path Found !!! Look at it ! :)"<<"\n";
+    cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
     for (int y = 0; y < ySize; y++) {
         for (int x = 0; x < xSize; x++) {
             GraphNode * node = map->getNode(x,y);

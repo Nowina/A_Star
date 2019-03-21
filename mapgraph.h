@@ -7,6 +7,8 @@
 #include <utilities.h>
 #include <fstream>
 #include <priorityQueue.h>
+#include <chrono>
+typedef chrono::high_resolution_clock Stoper;
 using namespace std;
 
 class MapGraph
@@ -86,7 +88,8 @@ public:
             goal.y = y;
         }
     }
-    Vector<GraphNode*> aStarSearch(){
+    Vector<GraphNode*> aStarSearch(double &timeTook){
+        auto t1 = Stoper::now();
         GraphNode* start = getNode(this->start);
         start->parent = nullptr;
         start->setG(0);
@@ -109,6 +112,8 @@ public:
                 path = reconstructPath(current);
                 delete open;
                 delete closed;
+                auto t2 = Stoper::now();
+                timeTook = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
                 return path;
             }
 

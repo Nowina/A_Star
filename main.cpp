@@ -9,7 +9,8 @@ int main()
     printMap(map);
     setGoalAndStart(map);
     printMap(map);
-    Vector<GraphNode*> path = map->aStarSearch();
-    printPath(map,path);
+    double timeTook = 0;
+    Vector<GraphNode*> path = map->aStarSearch(timeTook);
+    printPath(map,path,timeTook);
     delete map;
 }
