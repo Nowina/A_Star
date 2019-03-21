@@ -9,7 +9,6 @@ using namespace std;
 MapGraph *loadMap(){
     int x,y;
     string filename;
-    string route = "C:\\Users\\Nowina\\Documents\\STUDIA\\ZAP2\\A_STAR\\"; //FIX THIS!
     cout<<"Set height of map: ";
     cin>>y;
     cout<<"Set width of map: ";
@@ -17,7 +16,7 @@ MapGraph *loadMap(){
     MapGraph *map = new MapGraph(x,y);
     cout<<"Enter .map file name: ";
     cin>>filename;
-    filename = route+filename+".map";
+    filename = filename+".map";
     ifstream file;
     file.open(filename.c_str(), ios::in);
     if (file.is_open()){
