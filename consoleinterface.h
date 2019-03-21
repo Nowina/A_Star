@@ -18,7 +18,25 @@ MapGraph *loadMap(){
     cout<<"Enter .map file name: ";
     cin>>filename;
     filename = route+filename+".map";
-    map->loadMap(filename);
+    ifstream file;
+    file.open(filename.c_str(), ios::in);
+    if (file.is_open()){
+        string line;
+        int y = 0;
+        while (!file.eof()) {
+            getline(file,line);
+            for (unsigned int i = 0; i < line.size(); i++){
+                if (line[i] == ' '){
+                    map->getNode(int(i),y)->isObstacle = false;
+                }
+            }
+            if (y == 9){
+                break;
+            }
+            y++;
+        }
+        file.close();
+    }
     return map;
 }
 void setGoalAndStart(MapGraph*&map){

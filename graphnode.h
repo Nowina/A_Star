@@ -11,14 +11,16 @@ private:
     int g; //g value for A*
     int h; //heuristic value
     location position;
-    const int d =1;
-    const double d2 = sqrt(2);
+    const int d = 1; //cost of horizontal/vertical movement
+    const double d2 = sqrt(2); //cost of diagonal movement
+
     int diagonalDistance (location location){
         int dx = abs(position.x - location.x);
         int dy = abs(position.y - location.y);
         int cost = d * (dx + dy) + int((d2 - 2*d))*min(dx,dy);
         return cost;
     }
+
 public:
     GraphNode* parent;
     bool isObstacle;
@@ -40,9 +42,9 @@ public:
     void calculateF(){
         f = g + h;
     }
-    void addToG(int newG){
-        g += newG;
-    }
+//    void addToG(int newG){
+//        g += newG;
+//    }
     void setG(int newG){
         g = newG;
     }

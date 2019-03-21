@@ -68,27 +68,6 @@ public:
         }
         return neighbors;
     }
-    void loadMap(string fileName){
-        ifstream file;
-        file.open(fileName.c_str(), ios::in);
-        if (file.is_open()){
-            string line;
-            int y = 0;
-            while (!file.eof()) {
-                getline(file,line);
-                for (unsigned int i = 0; i < line.size(); i++){
-                    if (line[i] == ' '){
-                        getNode(int(i),y)->isObstacle = false;
-                    }
-                }
-                if (y == 9){
-                    break;
-                }
-                y++;
-            }
-            file.close();
-        }
-    }
     void setStart(int x, int y){ //use only after the map was loaded
         if (!getNode(x,y)->isObstacle){
             start.x = x;
@@ -158,7 +137,6 @@ public:
                     neighbor->calculateF();
                     open->push(neighbor,neighbor->f);
                 }
-
                 else if (neighborTentativeG >= closed->at(neighborClosedIndex)->data->getG()) {
                     continue;
                 }
