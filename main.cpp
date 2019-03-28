@@ -7,8 +7,9 @@ int main()
 {
     MapGraph* map = loadMap();
     setGoalAndStart(map);
+    printMap(map);
     double timeTook = 0;
-    Vector<GraphNode*> path = map->aStarSearch(timeTook);
+    Vector<GraphNode*> *path = map->aStarSearch(timeTook);
     printPathToFile(map,path,timeTook,"output.txt");
     delete map;
 }

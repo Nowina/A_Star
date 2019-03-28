@@ -4,7 +4,7 @@ template <class T>
 struct nodeList {
     T data;
     int key;
-    nodeList *next = nullptr, *prev = nullptr;
+    nodeList *next, *prev;
 };
 template <class T>
 struct node

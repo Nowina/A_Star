@@ -51,16 +51,19 @@ public:
     PriorityQueue(T firstElement,int key){
         A = new KeyVector<T>(firstElement,key);
     }
+    PriorityQueue(){
+        A = new KeyVector<T>();
+    }
     ~PriorityQueue(){
         delete A;
     }
 
     int size(){
-        return this->A->getSize();
+        return A->getSize();
     }
 
     bool isEmpty(){
-        return this->size() == 0;
+        return size() == 0;
     }
 
     void push(T newElement,int key) //instert new key to heap
@@ -71,16 +74,10 @@ public:
     }
     void pop() //remove element with highest priority
     {
-        try {
-            if (size() == 0){
-                throw out_of_range("index is out of range");
-            }
+        if (size() != 0){
             A->swapElements(0,A->getSize()-1);
             A->pop_back();
             heapify_down(0);
-        }
-        catch (const out_of_range& oor){
-            cout<<"\n"<< oor.what();
         }
     }
     T at(int index){
@@ -94,14 +91,8 @@ public:
     }
     T top() //return element with highest priority
     {
-        try {
-            if (size() == 0){
-                throw out_of_range("index out of range");
-            }
+        if (size() != 0){
             return A->at(0)->data;
-        }
-        catch(const out_of_range &oor){
-            cout<<"\n"<< oor.what();
         }
         return nullptr;
     }

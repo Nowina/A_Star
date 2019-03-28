@@ -31,12 +31,13 @@ Vector<GraphNode*>* MapGraph::getNeighbors(GraphNode* parent){
     for (int i = 0; i < 8; ++i) {
         neighborX = position.x + dirs[i].x;
         neighborY = position.y + dirs[i].y;
-        if ( !(neighborX < 0 || neighborX >= xSize || neighborY < 0 || neighborY >= ySize) ){
+        if ( !(neighborX < 0 || neighborX >= xSize || neighborY < 0 || neighborY >= ySize)){
             neighbor = getNode(neighborX,neighborY);
-            if ( neighbor->isPassable() == true){
+            if ( neighbor->isPassable() == true && !neighbor->wasVisited){
                 if (neighbor->parent == nullptr && neighbor->getPosition() != start){
                     neighbor->parent = parent;
                 }
+                neighbor->wasVisited = true;
                 neighbor->setG(parent->getG() + parent->calculateG(neighbor->getPosition()));
                 neighbor->calculateH(goal);
                 neighbor->calculateF();
@@ -64,7 +65,7 @@ void MapGraph::setGoal(int x, int y){ //use only after the map was loaded
         goal.y = y;
     }
 }
-Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
+Vector<GraphNode*>* MapGraph::aStarSearch(double &timeTook){
     auto t1 = Stoper::now();
     GraphNode* start = getNode(this->start);
     start->parent = nullptr;
@@ -75,12 +76,13 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
     PriorityQueue<GraphNode*> open(start,0);
     KeyVector<GraphNode*> closed(start,0);
     Vector<GraphNode*> *neighbors;
-    Vector<GraphNode*> path;
+    Vector<GraphNode*> *path;
     GraphNode * current;
     open.push(start, 0);
+    start->wasVisited = true;
+    start->inOpen = true;
     while ( !(open.isEmpty()) ) {
         current = open.top(); //get current from OPEN
-        current->wasVisited = true;
         location currentLocation = current->getPosition(); //get location of current
 
         if (currentLocation == goal){ //check if goal reached
@@ -89,31 +91,25 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
             timeTook = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
             return path;
         }
-//        visited gdy pobierany jako neighbor
-//        open - w push do open, pop na false
+        current->inOpen = false;
         open.pop(); //remove current from OPEN
         closed.push_front(current,current->getG()); //add current to CLOSED
-
+        current->inClosed = true;
         neighbors = getNeighbors(current); //get neighbors of CURRENT
 
         for (int  i = 0;  i < neighbors->getSize(); i++){
             GraphNode *neighbor = neighbors->at(i)->data;
             location neighborLocation = neighbor->getPosition();
-            int neighborOpenIndex = 0;
-            int neighborClosedIndex = 0;
-            bool inOpen = open.contains(neighbor,neighborOpenIndex);
-            bool inClosed = closed.contains(neighbor,neighborClosedIndex);
-            cout<<neighborLocation.x<<" "<<neighborLocation.y<<" "<<"In open/closed: "<<inOpen<<" "<<inClosed<<"\n";
-            if (inClosed || neighbor->wasVisited){
+            int neighborClosedIndex = closed.getIndex(neighbor);
+            if (neighbor->inClosed){
                 continue;
             }
-
             int neighborTentativeG = current->getG() + current->calculateG(neighborLocation);
-
-            if (!inOpen){
+            if (!neighbor->inOpen){
                 neighbor->setG(neighborTentativeG);
                 neighbor->calculateF();
                 open.push(neighbor,neighbor->f);
+                neighbor->inOpen = true;
             }
             else if (neighborTentativeG >= closed.at(neighborClosedIndex)->data->getG()) {
                 continue;
@@ -122,11 +118,11 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
     }
     return path;
 }
-Vector<GraphNode*> MapGraph::reconstructPath(GraphNode* goal){
-    Vector<GraphNode*> path;
+Vector<GraphNode*>* MapGraph::reconstructPath(GraphNode* goal){
+    Vector<GraphNode*> *path = new Vector<GraphNode*>();
     GraphNode* current = goal;
     while (current->parent != nullptr) {
-        path.push_front(current);
+        path->push_front(current);
         current = current->parent;
     }
     return path;

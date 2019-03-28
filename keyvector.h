@@ -21,6 +21,11 @@ public:
         tail = newElement;
         size = 1;
     }
+    KeyVector(){
+        head == NULL;
+        tail == NULL;
+        size = 0;
+    }
     ~KeyVector(){
         nodeList<T> *temp;
         while (head != NULL){
@@ -169,24 +174,22 @@ public:
         size--;
         delete temp;
     }
-    bool contains(T element, int &position){ //checks whether Vector contains given element
-        if (size == 0){
-            return false;
-        }
-        else {
-            position = 0;
+    int getIndex(T element){ //checks whether Vector contains given element
+        if (size != 0){
+            int position = 0;
             bool contains = false;
             nodeList<T> *current = head;
             while (current != NULL) {
                 position++;
                 if (current->data == element){
-//                    contains = true;
-//                    SIGSEGV if line above is not commented
+                    contains = true;
                     break;
                 }
                 current = current->next;
             }
-            return  contains;
+            if (contains){
+                return position;
+            }
         }
     }
 

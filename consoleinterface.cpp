@@ -77,7 +77,7 @@ void printMap(MapGraph* map){
     }
     cout<<"\n";
 }
-void printPathToConsole(MapGraph * map, Vector<GraphNode*> path, double timeTook){
+void printPathToConsole(MapGraph * map, Vector<GraphNode*>*path, double timeTook){
     bool startFound = false;
     bool goalFound  = false;
     location mapDimensions = map->getDimensions();
@@ -96,8 +96,8 @@ void printPathToConsole(MapGraph * map, Vector<GraphNode*> path, double timeTook
             GraphNode * node = map->getNode(x,y);
             location nodePosition = node->getPosition();
             bool isOnPath = false;
-            for (int i = 0; i < path.getSize(); ++i) {
-                if (nodePosition == path.at(i)->data->getPosition()){
+            for (int i = 0; i < path->getSize(); ++i) {
+                if (nodePosition == path->at(i)->data->getPosition()){
                     isOnPath = true;
                 }
             }
@@ -123,7 +123,7 @@ void printPathToConsole(MapGraph * map, Vector<GraphNode*> path, double timeTook
     }
     cout<<"\n";
 }
-void printPathToFile(MapGraph * map, Vector<GraphNode*> path, double timeTook,string filename){
+void printPathToFile(MapGraph * map, Vector<GraphNode*>* path, double timeTook,string filename){
     ofstream file;
     file.open(filename.c_str());
     bool startFound = false;
@@ -144,8 +144,8 @@ void printPathToFile(MapGraph * map, Vector<GraphNode*> path, double timeTook,st
             GraphNode * node = map->getNode(x,y);
             location nodePosition = node->getPosition();
             bool isOnPath = false;
-            for (int i = 0; i < path.getSize(); ++i) {
-                if (nodePosition == path.at(i)->data->getPosition()){
+            for (int i = 0; i < path->getSize(); ++i) {
+                if (nodePosition == path->at(i)->data->getPosition()){
                     isOnPath = true;
                 }
             }

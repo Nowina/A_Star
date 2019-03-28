@@ -10,6 +10,6 @@ using namespace std;
 MapGraph *loadMap();
 void setGoalAndStart(MapGraph*&map);
 void printMap(MapGraph* map);
-void printPathToConsole(MapGraph * map, Vector<GraphNode*> path, double timeTook);
-void printPathToFile(MapGraph * map, Vector<GraphNode*> path, double timeTook,string filename);
+void printPathToConsole(MapGraph * map, Vector<GraphNode*>*path, double timeTook);
+void printPathToFile(MapGraph * map, Vector<GraphNode*>*path, double timeTook,string filename);
 #endif // CONSOLEINTERFACE_H

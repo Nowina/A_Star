@@ -33,7 +33,7 @@ public:
     location getStart();
     location getGoal();
     void setGoal(int x, int y);
-    Vector<GraphNode*> aStarSearch(double &timeTook);
-    Vector<GraphNode*> reconstructPath(GraphNode* goal);
+    Vector<GraphNode*>* aStarSearch(double &timeTook);
+    Vector<GraphNode*>* reconstructPath(GraphNode* goal);
 };
 #endif // MAPGRAPH_H
