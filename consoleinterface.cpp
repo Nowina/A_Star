@@ -85,7 +85,12 @@ void printPathToConsole(MapGraph * map, Vector<GraphNode*> path, double timeTook
     location start = map->getStart();
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
-    cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
+    if (timeTook < 1000){
+        cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
+    }
+    else {
+        cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook/1000<<"s"<<"\n";
+    }
     for (int y = 0; y < ySize; y++) {
         for (int x = 0; x < xSize; x++) {
             GraphNode * node = map->getNode(x,y);
@@ -128,7 +133,12 @@ void printPathToFile(MapGraph * map, Vector<GraphNode*> path, double timeTook,st
     location start = map->getStart();
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
-    file<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
+    if (timeTook < 1000){
+        file<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
+    }
+    else {
+        file<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook/1000<<"s"<<"\n";
+    }
     for (int y = 0; y < ySize; y++) {
         for (int x = 0; x < xSize; x++) {
             GraphNode * node = map->getNode(x,y);

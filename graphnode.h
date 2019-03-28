@@ -20,6 +20,7 @@ public:
     GraphNode* parent;
     bool isObstacle;
     bool wasVisited = false;
+    bool open = false;
     int f; //g +h
     GraphNode(int x, int y);
     GraphNode(int x, int y, bool isObstacle);

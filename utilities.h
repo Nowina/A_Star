@@ -4,13 +4,18 @@ template <class T>
 struct nodeList {
     T data;
     int key;
-    nodeList *next, *prev;
+    nodeList *next = nullptr, *prev = nullptr;
 };
-template <typename T>
+template <class T>
 struct node
 {
    T data;
    node* next, *prev;
+};
+template <class T>
+struct hashNode{
+    T data;
+    hashNode *next;
 };
 struct location{
     int x;

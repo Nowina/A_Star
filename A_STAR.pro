@@ -8,7 +8,8 @@ SOURCES += \
     graphnode.cpp \
     mapgraph.cpp \
     matrixv2.cpp \
-    consoleinterface.cpp
+    consoleinterface.cpp \
+    hashtable.cpp
 
 HEADERS += \
     priorityQueue.h \
@@ -18,4 +19,5 @@ HEADERS += \
     keyvector.h \
     vector.h \
     matrixv2.h \
-    consoleinterface.h
+    consoleinterface.h \
+    hashtable.h

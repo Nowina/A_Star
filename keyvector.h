@@ -137,7 +137,7 @@ public:
             }
             else if (index >= size/2) {
                 actual = tail;
-                position = size-1;
+                position = size - 1;
                 while (position != index) {
                     actual = actual->prev;
                     position--;
@@ -180,6 +180,8 @@ public:
             while (current != NULL) {
                 position++;
                 if (current->data == element){
+//                    contains = true;
+//                    SIGSEGV if line above is not commented
                     break;
                 }
                 current = current->next;

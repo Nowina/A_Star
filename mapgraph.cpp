@@ -78,7 +78,6 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
     Vector<GraphNode*> path;
     GraphNode * current;
     open.push(start, 0);
-
     while ( !(open.isEmpty()) ) {
         current = open.top(); //get current from OPEN
         current->wasVisited = true;
@@ -90,7 +89,8 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
             timeTook = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
             return path;
         }
-
+//        visited gdy pobierany jako neighbor
+//        open - w push do open, pop na false
         open.pop(); //remove current from OPEN
         closed.push_front(current,current->getG()); //add current to CLOSED
 
@@ -103,7 +103,7 @@ Vector<GraphNode*> MapGraph::aStarSearch(double &timeTook){
             int neighborClosedIndex = 0;
             bool inOpen = open.contains(neighbor,neighborOpenIndex);
             bool inClosed = closed.contains(neighbor,neighborClosedIndex);
-
+            cout<<neighborLocation.x<<" "<<neighborLocation.y<<" "<<"In open/closed: "<<inOpen<<" "<<inClosed<<"\n";
             if (inClosed || neighbor->wasVisited){
                 continue;
             }

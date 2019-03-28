@@ -173,6 +173,7 @@ public:
             while (current != NULL) {
                 position++;
                 if (current->data == element){
+                    contains = true;
                     break;
                 }
                 current = current->next;
