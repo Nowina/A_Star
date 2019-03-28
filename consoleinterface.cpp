@@ -3,11 +3,7 @@
 MapGraph *loadMap(){
     int x,y;
     string filename;
-    cout<<"Set height of map: ";
-    cin>>y;
-    cout<<"Set width of map: ";
-    cin>>x;
-    MapGraph *map = new MapGraph(x,y);
+    MapGraph *map;
     cout<<"Enter .map file name: ";
     cin>>filename;
     filename = filename+".map";
@@ -15,11 +11,30 @@ MapGraph *loadMap(){
     file.open(filename.c_str(), ios::in);
     if (file.is_open()){
         string line;
-        int y = 0;
+        string number;
+        getline(file,line);
+        for (unsigned int i = 0; i < line.size(); ++i) {
+            if (line[i] >= '0' && line[i] < '9'){
+                number += line[i];
+            }
+        }
+        x = stoi(number);
+        number = "";
+        getline(file,line);
+        for (unsigned int i = 0; i < line.size(); ++i) {
+            if (line[i] >= '0' && line[i] < '9'){
+                number += line[i];
+            }
+        }
+        y = stoi(number);
+        cout<<"Loaded Map size: "<<x<<" "<<y<<endl;
+        map = new MapGraph(x,y);
+        y = 0;
+        x = 0;
         while (!file.eof()) {
             getline(file,line);
             for (unsigned int i = 0; i < line.size(); i++){
-                if (line[i] == ' '){
+                if (line[i] == '.'){
                     map->getNode(int(i),y)->isObstacle = false;
                 }
             }
@@ -70,12 +85,45 @@ void printMap(MapGraph* map){
                 startFound = true;
             }
             else {
-                cout<<" ";
+                cout<<".";
             }
         }
         cout<<"\n";
     }
     cout<<"\n";
+}
+void printMapToFile(MapGraph* map,string filename){
+    ofstream file;
+    file.open(filename.c_str());
+    bool startFound = false;
+    bool goalFound  = false;
+    location mapDimensions = map->getDimensions();
+    location goal = map->getGoal();
+    location start = map->getStart();
+    int xSize = mapDimensions.x;
+    int ySize = mapDimensions.y;
+    for (int y = 0; y < ySize; y++) {
+        for (int x = 0; x < xSize; x++) {
+            GraphNode * node = map->getNode(x,y);
+            location nodePosition = node->getPosition();
+            if (node->isObstacle){
+                file<<"@";
+            }
+            else if (nodePosition == goal && !goalFound) {
+                file<<"G";
+                goalFound = true;
+            }
+            else if (nodePosition == start && !startFound){
+                file<<"S";
+                startFound = true;
+            }
+            else {
+                file<<".";
+            }
+        }
+        file<<"\n";
+    }
+    file<<"\n";
 }
 void printPathToConsole(MapGraph * map, Vector<GraphNode*>*path, double timeTook){
     bool startFound = false;
@@ -86,7 +134,7 @@ void printPathToConsole(MapGraph * map, Vector<GraphNode*>*path, double timeTook
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
     if (timeTook < 1000){
-        cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
+        cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"s"<<"\n";
     }
     else {
         cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook/1000<<"s"<<"\n";
@@ -116,7 +164,7 @@ void printPathToConsole(MapGraph * map, Vector<GraphNode*>*path, double timeTook
                 cout<<"-";
             }
             else {
-                cout<<" ";
+                cout<<".";
             }
         }
         cout<<"\n";
@@ -133,12 +181,8 @@ void printPathToFile(MapGraph * map, Vector<GraphNode*>* path, double timeTook,s
     location start = map->getStart();
     int xSize = mapDimensions.x;
     int ySize = mapDimensions.y;
-    if (timeTook < 1000){
-        file<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"ms"<<"\n";
-    }
-    else {
-        file<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook/1000<<"s"<<"\n";
-    }
+    cout<<"Path Found !!! Look at it ! :) It took me exactly: "<<timeTook<<"s"<<"\n";
+    cout<<"Now printing path to file..."<<"\n";
     for (int y = 0; y < ySize; y++) {
         for (int x = 0; x < xSize; x++) {
             GraphNode * node = map->getNode(x,y);
@@ -161,10 +205,10 @@ void printPathToFile(MapGraph * map, Vector<GraphNode*>* path, double timeTook,s
                 startFound = true;
             }
             else if (isOnPath) {
-                file<<"-";
+                file<<"O";
             }
             else {
-                file<<" ";
+                file<<".";
             }
         }
         file<<"\n";

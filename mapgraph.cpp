@@ -73,12 +73,12 @@ Vector<GraphNode*>* MapGraph::aStarSearch(double &timeTook){
     start->calculateH(goal);
     start->calculateF();
 
-    PriorityQueue<GraphNode*> open(start,0);
+    PriorityQueue<GraphNode*> open;
     KeyVector<GraphNode*> closed(start,0);
     Vector<GraphNode*> *neighbors;
     Vector<GraphNode*> *path;
     GraphNode * current;
-    open.push(start, 0);
+    open.push(start,0);
     start->wasVisited = true;
     start->inOpen = true;
     while ( !(open.isEmpty()) ) {
@@ -88,7 +88,7 @@ Vector<GraphNode*>* MapGraph::aStarSearch(double &timeTook){
         if (currentLocation == goal){ //check if goal reached
             path = reconstructPath(current);
             auto t2 = Stoper::now();
-            timeTook = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+            timeTook = chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
             return path;
         }
         open.pop(); //remove current from OPEN
@@ -116,7 +116,6 @@ Vector<GraphNode*>* MapGraph::aStarSearch(double &timeTook){
             }
         }
     }
-    return path;
 }
 Vector<GraphNode*>* MapGraph::reconstructPath(GraphNode* goal){
     Vector<GraphNode*> *path = new Vector<GraphNode*>();

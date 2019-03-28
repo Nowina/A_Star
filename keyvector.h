@@ -67,15 +67,27 @@ public:
         }
     }
     nodeList<T> *push_front(T element, int newKey){
-        nodeList<T> *newElement = new nodeList<T>;
-        newElement->key = newKey;
-        newElement->data = element;
-        newElement->next = head;
-        newElement->prev = NULL;
-        if (head != NULL){
-            head->prev = newElement;
+        if (size == 0){
+            nodeList<T> *newElement = new nodeList<T>;
+            newElement->key = newKey;
+            newElement->data = element;
+            newElement->next = NULL;
+            newElement->prev = NULL;
+            head = newElement;
+            tail = newElement;
         }
-        head = newElement;
+        else {
+            nodeList<T> *newElement = new nodeList<T>;
+            newElement->key = newKey;
+            newElement->data = element;
+            newElement->next = head;
+            newElement->prev = NULL;
+            if (head != NULL){
+                head->prev = newElement;
+            }
+            head = newElement;
+
+        }
         size++;
         return head;
     }
