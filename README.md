@@ -1,5 +1,5 @@
 # A_Star
-A* Implementation with custom PriorityQueue
+A* Implementation with custom data structures, <b> no STL ! </b>
 <br>
 Works on files with .map extension.
 <br>
