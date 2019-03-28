@@ -33,7 +33,7 @@ Vector<GraphNode*>* MapGraph::getNeighbors(GraphNode* parent){
         neighborY = position.y + dirs[i].y;
         if ( !(neighborX < 0 || neighborX >= xSize || neighborY < 0 || neighborY >= ySize)){
             neighbor = getNode(neighborX,neighborY);
-            if ( neighbor->isPassable() == true && !neighbor->wasVisited){
+            if ( neighbor->isPassable() == true && neighbor->wasVisited == false ){
                 if (neighbor->parent == nullptr && neighbor->getPosition() != start){
                     neighbor->parent = parent;
                 }
@@ -91,8 +91,8 @@ Vector<GraphNode*>* MapGraph::aStarSearch(double &timeTook){
             timeTook = chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
             return path;
         }
-        current->inOpen = false;
         open.pop(); //remove current from OPEN
+        current->inOpen = false;
         closed.push_front(current,current->getG()); //add current to CLOSED
         current->inClosed = true;
         neighbors = getNeighbors(current); //get neighbors of CURRENT

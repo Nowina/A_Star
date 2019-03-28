@@ -11,5 +11,6 @@ int main()
     double timeTook = 0;
     Vector<GraphNode*> *path = map->aStarSearch(timeTook);
     printPathToFile(map,path,timeTook,"output.txt");
+    delete path;
     delete map;
 }
